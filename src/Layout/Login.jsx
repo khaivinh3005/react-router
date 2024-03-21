@@ -13,6 +13,7 @@ const Login = () => {
   const history = useHistory();
   const onSubmit = (data) => {
     if (data) {
+      localStorage.setItem('isLogin', JSON.parse(true));
       history.push('/');
     }
   };

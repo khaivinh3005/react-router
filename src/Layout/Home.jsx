@@ -15,13 +15,36 @@ import {
 import React from 'react';
 import { HamburgerIcon } from '@chakra-ui/icons';
 import { Link, useHistory } from 'react-router-dom';
+import { useEffect } from 'react';
+import axios from 'axios';
+import { APIShoes } from '../API/Constanst';
 
 const Home = () => {
   const history = useHistory();
   const handleRedirect = () => {
-    if (true) {
+    const isLoginLocal = JSON.parse(localStorage.getItem('isLogin'));
+    if (isLoginLocal) {
       history.push('/pay');
+    } else {
+      history.push('/login');
     }
+  };
+
+  useEffect(() => {
+    axios
+      .get(APIShoes)
+      .then((response) => {
+        const listShoes = response.data.content;
+        console.log('listShoes :', listShoes);
+      })
+      .catch((error) => {
+        console.log('error:  ', error);
+      });
+  }, []);
+
+  const handleToDetails = (id) => {
+    console.log('id :', id);
+    history.push(`/details/${id}`);
   };
 
   return (
@@ -53,6 +76,13 @@ const Home = () => {
             </Button>
             <Button variant='ghost' colorScheme='blue'>
               Add to cart
+            </Button>
+            <Button
+              variant='ghost'
+              colorScheme='blue'
+              onClick={() => handleToDetails(3)}
+            >
+              Details
             </Button>
           </ButtonGroup>
         </CardFooter>
