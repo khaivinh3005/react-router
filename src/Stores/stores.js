@@ -8,7 +8,6 @@ import homeSlice from './Redux/homeRedux/homeSlice.js';
 
 export const store = configureStore({
   reducer: {
-    // home redux page
     storeA: homeSlice,
   },
 });

@@ -1,43 +1,52 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  listFood: [
-    {
-      name: 'rice chicken',
-      price: 10,
-      count: 10,
-    },
-    {
-      name: 'rice duck',
-      price: 20,
-      count: 5,
-    },
-  ],
-  countBought: 15,
-  hello: 'hello',
-  isClick: false,
+  listShoes: [],
+  cart: [],
 };
 
 export const homeSlice = createSlice({
   name: 'homeRedux',
   initialState,
   reducers: {
-    // nơi chứa function thay đổi state ở store
-    handleDownCount: (state) => {
-      //1 countBought từ state
-      //2 giảm countBought
-      state.countBought -= 1;
+    handleGetListShoes: (state, action) => {
+      state.listShoes = action.payload;
     },
-    handleTranslateStore: (state, action) => {
-      console.log('sate : ', state.hello);
-      console.log('payload : ', action.payload);
 
-      state.hello = action.payload;
-      state.isClick = !state.isClick;
+    handleAddToCartStore: (state, action) => {
+      const item = { ...action.payload, count: 1 };
+      const cartStore = [...state.cart];
+      if (cartStore.length > 0) {
+        const isExist = cartStore.find((item) => item.id === action.payload.id);
+        if (!isExist) {
+          cartStore.push(item);
+        } else {
+          alert('Da ton tai');
+        }
+      } else {
+        cartStore.push(item);
+      }
+
+      state.cart = cartStore;
+    },
+
+    upToCountStore: (state, action) => {
+      const cartStore = [...state.cart];
+      const product = action.payload;
+      cartStore.map((item) => {
+        if (item.id === product.id) {
+          const itemUpdate = { ...item, count: item.count++ };
+          return itemUpdate;
+        }
+        return item;
+      });
+
+      state.cart = cartStore;
     },
   },
 });
 
-export const { handleDownCount, handleTranslateStore } = homeSlice.actions;
+export const { handleGetListShoes, handleAddToCartStore, upToCountStore } =
+  homeSlice.actions;
 
 export default homeSlice.reducer;
