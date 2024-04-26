@@ -26,6 +26,7 @@ import axios from 'axios';
 
 import { APIShoes } from '../../API/Constanst';
 import './home.css';
+import HeaderComponent from '../../Layout/Components/Header';
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -49,6 +50,7 @@ const Home = () => {
 
   return (
     <Box>
+      <HeaderComponent />1
       <Grid templateColumns='repeat(4, 1fr)' gap={6}>
         {listShoes.map((item) => {
           return (

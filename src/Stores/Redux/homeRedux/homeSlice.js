@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   listShoes: [],
   cart: [],
+  voucherDiscount: 0,
 };
 
 export const homeSlice = createSlice({
@@ -12,7 +13,6 @@ export const homeSlice = createSlice({
     handleGetListShoes: (state, action) => {
       state.listShoes = action.payload;
     },
-
     handleAddToCartStore: (state, action) => {
       const item = { ...action.payload, count: 1 };
       const cartStore = [...state.cart];
@@ -26,10 +26,8 @@ export const homeSlice = createSlice({
       } else {
         cartStore.push(item);
       }
-
       state.cart = cartStore;
     },
-
     upToCountStore: (state, action) => {
       const cartStore = [...state.cart];
       const product = action.payload;
@@ -43,10 +41,35 @@ export const homeSlice = createSlice({
 
       state.cart = cartStore;
     },
+    downToCountStore: (state, action) => {
+      const cartStore = [...state.cart];
+      const product = action.payload;
+      cartStore.map((item) => {
+        if (item.id === product.id) {
+          if (item.count === 0) {
+            return item.count;
+          }
+          console.log('return');
+          const itemUpdate = { ...item, count: item.count-- };
+          return itemUpdate;
+        }
+        return item;
+      });
+      state.cart = cartStore;
+    },
+    handleAddVoucherStore: (state, action) => {
+      console.log('Action : ', action.payload);
+      state.voucherDiscount = action.payload;
+    },
   },
 });
 
-export const { handleGetListShoes, handleAddToCartStore, upToCountStore } =
-  homeSlice.actions;
+export const {
+  handleGetListShoes,
+  handleAddToCartStore,
+  upToCountStore,
+  downToCountStore,
+  handleAddVoucherStore,
+} = homeSlice.actions;
 
 export default homeSlice.reducer;
